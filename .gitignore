@@ -1,0 +1,14 @@
+__pycache__/
+*.egg-info/
+.pytest_cache/
+build/
+dist/
+.venv/
+*.profile.json
+profile.json
+headroom.html
+headroom.json
+demo_report.html
+
+# example data is part of the repository
+!examples/**
