@@ -1,5 +1,7 @@
 # vllm-headroom
 
+English | [中文](README.zh-CN.md)
+
 **How much more traffic can your vLLM server take before it breaks its latency SLO?**
 
 `vllm-headroom` profiles a running vLLM server for about three minutes, fits a model of how long each
@@ -63,7 +65,7 @@ and the default is the mix used during profiling. SLO metrics are `ttft` (time t
 
 ## How it works
 
-**1. Profile.** Three phases against the OpenAI-compatible endpoint:
+**1. Profile.** Four phases against the OpenAI-compatible endpoint:
 
 | phase | what is sent | what it identifies |
 |---|---|---|
