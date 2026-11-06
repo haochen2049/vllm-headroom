@@ -1,6 +1,6 @@
 # vllm-headroom
 
-English | [中文](README.zh-CN.md)
+English | [中文](https://github.com/haochen2049/vllm-headroom/blob/main/README.zh-CN.md)
 
 **How much more traffic can your vLLM server take before it breaks its latency SLO?**
 
@@ -20,7 +20,9 @@ what-if replicas=2: max 42.475 req/s (saturation)
 ```
 
 It writes a self-contained HTML report with latency-versus-load curves, the backtest and the fitted
-model. Nothing leaves your machine.
+model. Nothing leaves your machine. [See the full example report](https://haochen2049.github.io/vllm-headroom/) from a real 7B deployment.
+
+[![Example report: TTFT p95 versus load, with the SLO, the current load and the highest load that still meets the SLO](https://raw.githubusercontent.com/haochen2049/vllm-headroom/main/assets/report.png)](https://haochen2049.github.io/vllm-headroom/)
 
 > Status: alpha (0.1). Tested against vLLM 0.31 on one GPU type; see [Validation](#validation).
 > Not affiliated with the vLLM project.
@@ -35,7 +37,7 @@ Load testing every option is slow. A model fitted to *your* server answers these
 ## Quick start
 
 ```bash
-pip install git+https://github.com/haochen2049/vllm-headroom
+pip install vllm-headroom
 
 # no GPU? profile a bundled simulated server and open the sample report (about 2-3 minutes)
 vllm-headroom demo -o demo_report.html
@@ -103,7 +105,7 @@ held-out validation load.
 
 One run so far: Qwen2.5-7B-Instruct on vLLM 0.31.0, one NVIDIA RTX PRO 6000 Blackwell (96 GB),
 `--max-num-seqs 64 --max-num-batched-tokens 4096 --gpu-memory-utilization 0.5`. The profile, report
-and check script are in [`examples/qwen2.5-7b-vllm0.31`](examples/qwen2.5-7b-vllm0.31). The workload
+and check script are in [`examples/qwen2.5-7b-vllm0.31`](https://github.com/haochen2049/vllm-headroom/tree/main/examples/qwen2.5-7b-vllm0.31). The workload
 is the default log-normal mix (prompt mean 505, output mean 130 tokens). `max_num_seqs` was not passed
 and was inferred correctly (64).
 
@@ -127,8 +129,8 @@ Entries are prediction error relative to measurement (positive = predicted slowe
 latency is within 5% everywhere. TTFT is predicted somewhat pessimistically up to 85% load. At 95%
 load the TTFT tail is under-predicted by 19%, because close to saturation a small error in the rate
 moves the tail a lot. Treat the last few percent before saturation as unreliable and keep a margin.
-This is one model, one GPU and one workload; results on other setups may differ, and reports of
-backtests on other hardware are very welcome.
+This is one model, one GPU and one workload; results on other setups may differ. If you run it on
+other hardware, please [share your backtest](https://github.com/haochen2049/vllm-headroom/issues/new?template=backtest.yml): it is the most useful contribution right now.
 
 The unit tests also check the simulator against a plain step-by-step reference implementation
 (identical results), recover known parameters from synthetic data, and run the full

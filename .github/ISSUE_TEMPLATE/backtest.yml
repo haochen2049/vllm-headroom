@@ -1,0 +1,54 @@
+name: Share a backtest
+description: Report how well the predictions matched your own vLLM server
+title: "Backtest: <GPU> / <model> / vLLM <version>"
+labels: ["backtest"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Backtests on hardware and models we have not tried are the most useful contribution right now.
+        Please remove anything you consider private (host names, internal model names) before posting.
+  - type: input
+    id: gpu
+    attributes:
+      label: GPU and count
+      placeholder: "1x H100 80GB SXM"
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Model and tensor-parallel size
+      placeholder: "meta-llama/Llama-3.1-8B-Instruct, TP=1"
+    validations:
+      required: true
+  - type: input
+    id: vllm
+    attributes:
+      label: vLLM version and launch flags
+      placeholder: "0.31.0, --max-num-seqs 128 --max-num-batched-tokens 8192"
+    validations:
+      required: true
+  - type: input
+    id: tool
+    attributes:
+      label: vllm-headroom version
+      placeholder: "0.1.0"
+  - type: textarea
+    id: workload
+    attributes:
+      label: Workload
+      description: Default synthetic mix, or your own JSONL (summary statistics only are fine).
+  - type: textarea
+    id: results
+    attributes:
+      label: Backtest table
+      description: Paste the backtest table from the report (load, requests, measured, predicted, error).
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything surprising
+      description: Where the prediction was far off, and anything about your setup that might explain it.

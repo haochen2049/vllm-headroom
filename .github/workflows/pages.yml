@@ -1,0 +1,35 @@
+name: example report
+
+on:
+  push:
+    branches: [main]
+    paths: ["examples/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp examples/qwen2.5-7b-vllm0.31/report.html _site/index.html
+          cp -r examples _site/examples
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4

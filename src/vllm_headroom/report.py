@@ -50,6 +50,7 @@ class Chart:
         self.xr, self.yr = xr, yr
         self.parts: list[str] = []
         self.xl, self.yl = xlabel, ylabel
+        self.hys: list[float] = []  # y of horizontal reference lines, kept clear of vline labels
 
     def X(self, x):
         return self.ml + (x - self.xr[0]) / (self.xr[1] - self.xr[0]) * (self.w - self.ml - self.mr)
@@ -76,6 +77,7 @@ class Chart:
 
     def hline(self, y, color, label=""):
         yy = self.Y(y)
+        self.hys.append(yy)
         self.parts.append(f'<line x1="{self.ml}" x2="{self.w - self.mr}" y1="{yy:.1f}" y2="{yy:.1f}" stroke="{color}" '
                           f'stroke-dasharray="5 4"/>')
         if label:
@@ -88,7 +90,10 @@ class Chart:
         if label:
             right = xx > self.w - 220
             tx, anchor = (xx - 4, "end") if right else (xx + 4, "start")
-            self.parts.append(f'<text class="tk" x="{tx:.1f}" y="{self.mt + 12 + 14 * row}" text-anchor="{anchor}">'
+            ty = self.mt + 12 + 14 * row
+            while any(ty - 12 <= hy <= ty + 4 for hy in self.hys):
+                ty += 14
+            self.parts.append(f'<text class="tk" x="{tx:.1f}" y="{ty}" text-anchor="{anchor}">'
                               f'{html.escape(label)}</text>')
 
     def dots(self, xs, ys, color, r=3):

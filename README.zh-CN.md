@@ -21,6 +21,9 @@ what-if replicas=2: max 42.475 req/s (saturation)
 （各行依次为：饱和速率；满足 SLO 的最大负载，括号内是 10–90% 区间和最先触线的 SLO；相对当前负载的余量；两项假设分析的结果。）
 
 它会生成一个独立的 HTML 报告，包含延迟-负载曲线、回测结果和拟合出的模型。所有数据都留在你的机器上。
+[在线查看完整示例报告](https://haochen2049.github.io/vllm-headroom/)（来自一台真实的 7B 部署）。
+
+[![示例报告：TTFT p95 随负载的变化，标出了 SLO、当前负载和仍满足 SLO 的最高负载](assets/report.png)](https://haochen2049.github.io/vllm-headroom/)
 
 > 状态：alpha 版（0.1）。只在 vLLM 0.31 和一种 GPU 上测试过，见[验证](#验证)。
 > 与 vLLM 项目没有隶属关系。
@@ -34,7 +37,7 @@ what-if replicas=2: max 42.475 req/s (saturation)
 ## 快速开始
 
 ```bash
-pip install git+https://github.com/haochen2049/vllm-headroom
+pip install vllm-headroom
 
 # 没有 GPU？剖析自带的模拟服务器并生成示例报告（约 2-3 分钟）
 vllm-headroom demo -o demo_report.html
@@ -117,8 +120,8 @@ step 运行时就规划下一个 step，所以新请求大约要多等一到两�
 
 表中数值是预测相对实测的误差（正值表示预测比实测慢）。端到端延迟在所有负载下误差都在 5% 以内。85% 负载以内，TTFT
 的预测略偏悲观。95% 负载时 TTFT 尾部被低估 19%，因为接近饱和时，速率上的微小误差会让尾部大幅移动。饱和前的最后几个
-百分点应视为不可靠，要留出余量。这只是一个模型、一张 GPU、一种工作负载的结果，换到其他环境可能不同，非常欢迎提交
-其他硬件上的回测结果。
+百分点应视为不可靠，要留出余量。这只是一个模型、一张 GPU、一种工作负载的结果，换到其他环境可能不同。如果你在其他硬件上跑过，欢迎
+[提交你的回测结果](https://github.com/haochen2049/vllm-headroom/issues/new?template=backtest.yml)，这是目前最有用的贡献。
 
 单元测试还检查了：模拟器与一个朴素的逐 step 参考实现结果完全一致；能从合成数据中还原已知参数；能通过 HTTP 对自带的
 模拟服务器跑通"剖析 → 拟合 → 报告"全流程。

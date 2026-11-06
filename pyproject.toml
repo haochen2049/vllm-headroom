@@ -12,10 +12,25 @@ requires-python = ">=3.10"
 dependencies = ["numpy>=1.24", "httpx>=0.25"]
 keywords = ["vllm", "llm", "inference", "capacity-planning", "slo", "queueing", "simulation"]
 classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
   "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
   "Topic :: System :: Benchmark",
 ]
+
+[project.urls]
+Homepage = "https://github.com/haochen2049/vllm-headroom"
+Source = "https://github.com/haochen2049/vllm-headroom"
+Issues = "https://github.com/haochen2049/vllm-headroom/issues"
+"Example report" = "https://haochen2049.github.io/vllm-headroom/"
 
 [project.optional-dependencies]
 dev = ["pytest>=7"]
